@@ -36,16 +36,52 @@ def change_orientation():
 
 for i in files:
     if i == 'operations' + str(holder_id) + '.txt':
+        print(i[:-4])
         
-        document.add_heading(i,0)
-        txt_file_content = open('C:/Users/Farhan Ashraf/Desktop/' + i).read()
-        word_file = document.add_paragraph(txt_file_content)
+        document.add_heading(i, 0)
+        txt_file_content = open('C:/Users/farhan Ashraf/Desktop' +  i ).readlines()
+        count = 0
         
+        for k in txt_file_content:
+            count += 1
+            
+        print(count)
+        
+        try:
+            paragraph = document.add_paragraph(txt_file_content[0])
+            paragraph.add_run().add_break()
+            
+            for j in range(1, count):
+                c = txt_file_content[j].split("\t")
+                balance = int(float(c[4]))
+                paragraph.add_run(txt_file_content[j][:-1])
+                if (c[3][0] + c[3][1] + c[3][2] + c[3][3]) == 'UTNA':
+                    if c[1] in ["NP"]:
+                        print("Need to be checked")
+            
+                        run = paragraph.add_run('\tCheck in app')
+                        run.font.color.rgb = red
+                    elif balance < 100:
+                        run = paragraph.add_run('\tU/T\n')
+                        run.font.color.rgb = red
+                        
+                    elif balance > 100: 
+                        run = paragraph.add_run('\tN/A\n')
+                        run.font.color.rgb = red
+                        
+                elif balance < 100:
+                    run = paragraph.add_run('\tU/T\n')
+                    run.font.color.rgb = red
+                        
+                elif balance > 100:
+                    run = paragraph.add_run('\tN/A\n')
+                    run.font.color.rgb = red
+        except:
+            pass
+
         font = document.styles['Normal'].font
         font.name = 'Courier New'
         font.size = Pt(8)
-        print("Entered")
-    
-document.save('C:/Users/Farhan Ashraf/Desktop/' + i[:-4] + '.docx')
-        
+        document.save('C:/Users/Farhan Ashraf/Desktop/' + i[:-4] + '.docx')    
+
 
